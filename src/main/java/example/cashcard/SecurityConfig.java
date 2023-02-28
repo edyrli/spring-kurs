@@ -13,14 +13,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
-
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
-        .requestMatchers("/cashcards/**")
-        .authenticated()
-        .and()
-        .csrf().disable()
-        .httpBasic();
+            .requestMatchers("/cashcards/**")
+            .authenticated()
+            .and()
+            .csrf().disable()
+            .httpBasic();
         return http.build();
     }
 
