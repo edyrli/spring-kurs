@@ -176,4 +176,26 @@ class CashCardApplicationTests {
             .exchange("/cashcards/999", HttpMethod.PUT, request, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    @DirtiesContext
+    void shouldDeleteAnExsistingCashCard() {
+        ResponseEntity<Void> response = restTemplate
+            .withBasicAuth("sarah1", "abc123")
+            .exchange("/cashcards/99", HttpMethod.DELETE, null, void.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+        ResponseEntity<String> getResponse = restTemplate
+            .withBasicAuth("sarah1", "abc123")
+            .getForEntity("/cashcards/99", String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    void shouldNotDeleteACashCardThatDoesNotExist() {
+        ResponseEntity<Void> deleteResponce = restTemplate
+            .withBasicAuth("sarah1", "abc123")
+            .exchange("/cashcards/999", HttpMethod.DELETE, null, Void.class);
+        assertThat(deleteResponce.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 }
